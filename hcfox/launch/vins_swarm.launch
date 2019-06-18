@@ -1,0 +1,12 @@
+<launch>
+    <arg name="drone_number" default="1"/>
+    <param name="config_file" type="string" value="$(find feature_tracker)/../config/A3/A3_config.yaml" />
+    <param name="vins_folder" type="string" value="$(find feature_tracker)/../config/../" />
+    <param name="agent_num" type="int" value="$(arg drone_number)" />
+    <node name="feature_tracker" pkg="feature_tracker" type="feature_tracker" output="log">
+        <remap from="~/image"           to="vins_1/hcfox_$(arg drone_number)/image"/>
+    </node>
+    <node name="vins_estimator" pkg="vins_estimator" type="vins_estimator" output="screen">
+        <remap from="~/imu"                     to="dji_sdk_$(arg drone_number)/dji_sdk/imu"/>
+    </node>
+</launch>

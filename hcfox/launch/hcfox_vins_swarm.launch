@@ -1,0 +1,30 @@
+<launch>
+    <arg name="drone_number" default="1"/>
+    <node pkg="hcfox" type="hcfox" name="hcfox_$(arg drone_number)" output="screen" launch-prefix="">
+        <rosparam>
+            # common setting and default individual settings
+            verbose_output: false
+            cam_cnt: 1
+            fps:  20
+            gain: 1.0
+            use_auto_exposure: false
+            fast_mode: false
+            aec_desired_gray_value: 60 # desired overall gray value for the image
+            aec_control_delay_frame: 1 # larger values cause slower convergence
+
+            # individual setting for camera 0
+            camera0:
+                topic: image
+                use_auto_exposure: false
+                exposure_time_us: 10000
+                # aec_desired_gray_value: 60
+                # aec_control_delay_frame: 1
+                auto_speed: 0 # 0--1--2, slow--medium--fast converge to desired value
+                gain: 1.0
+                is_slave: true
+        </rosparam>
+        <param name="camera0/serial" type="string" value="$(env fox_camera0)"/>
+        <remap from="~trigger_time" to="dji_sdk_$(arg drone_number)/dji_sdk/trigger_time"/>
+        <remap from="~dji_sdk/set_hardsyc" to="dji_sdk_$(arg drone_number)/dji_sdk/set_hardsyc"/>
+    </node> 
+</launch>

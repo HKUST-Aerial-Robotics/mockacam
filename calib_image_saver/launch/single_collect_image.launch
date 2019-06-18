@@ -1,0 +1,16 @@
+<launch>
+    <arg name="dir"     default="/tmp"/>
+    <arg name="topic"   default="/hcfox/image"/>
+    <arg name="width"   default="9"/>
+    <arg name="height"  default="8"/>
+    <node pkg="calib_image_saver" type="singleImageSaver" name="saver" output="screen">
+        <remap from="/image_input"  to="$(arg topic)"/>
+        <param name="image_path"    type="string"   value="$(arg dir)"/>
+        <param name="image_name"    type="string"   value="IMG_"/>
+        <param name="board_width"   type="int"      value="$(arg width)"/>
+        <param name="board_height"  type="int"      value="$(arg height)"/>
+        <param name="is_use_OpenCV" type="bool"     value="false"/>
+        <param name="is_show"       type="bool"     value="true"/>
+    </node>
+</launch>
+
